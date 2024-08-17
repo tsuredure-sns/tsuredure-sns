@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable",
+      "WebWorker"
+    ],
+    "allowArbitraryExtensions": true,
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "useDefineForClassFields": true,
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "module": "NodeNext",
+    "moduleDetection": "auto",
+    "moduleResolution": "NodeNext"
+  }
+}

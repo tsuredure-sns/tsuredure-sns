@@ -1,0 +1,9 @@
+{
+  "name": "tsuredure-sns-monorepo",
+  "private": true,
+  "packageManager": "pnpm@9.7.1",
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3",
+    "typescript": "5.5.4"
+  }
+}

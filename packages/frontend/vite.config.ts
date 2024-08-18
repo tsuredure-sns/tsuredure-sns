@@ -9,6 +9,7 @@ const headersPlugin = {
     headers.set("X-XSS-Protection", "1; mode=block");
     headers.set("Cross-Origin-Embedder-Policy", "require-corp");
     headers.set("Cross-Origin-Opener-Policy", "same-origin");
+    console.log(headers);
 
     return new Response(response.body, {
       headers,
@@ -38,7 +39,7 @@ export default defineConfig({
         ],
         runtimeCaching: [
           {
-            urlPattern: ({ request }) => ["document", "worker"].includes(request.destination),
+            urlPattern: ({ request }) => ["document", "iframe", "worker"].includes(request.destination),
             handler: "NetworkOnly",
             options: {
               plugins: [
@@ -52,18 +53,40 @@ export default defineConfig({
         // "**/*.png"
       ],
       manifest: {
+        id: "/",
         name: "徒然 SNS",
         short_name: "徒然",
         description: "徒然 Distributed-Web SNS",
         theme_color: "#556B2F",
+        display_override: ["standalone", "browser"],
+        display: "standalone",
+        screenshots: [
+          {
+            sizes: "512x512",
+            src: "/pwa-512x512.png",
+            form_factor: "wide",
+            type: "image/png",
+          },
+          {
+            sizes: "512x512",
+            src: "/pwa-512x512.png",
+            form_factor: "narrow",
+            type: "image/png",
+          },
+        ],
         icons: [
           {
-            src: "/pwa-images/ios/192.png",
+            src: "/pwa-64x64.png",
+            sizes: "64x64",
+            type: "image/png",
+          },
+          {
+            src: "/pwa-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "/pwa-images/ios/512.png",
+            src: "/pwa-512x512.png",
             sizes: "512x512",
             type: "image/png",
           },

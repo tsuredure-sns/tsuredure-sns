@@ -1,6 +1,4 @@
 import { registerSW } from "virtual:pwa-register";
 
-registerSW({
-  immediate: true,
-});
+registerSW();
 console.log("crossOriginIsolated", window.crossOriginIsolated);

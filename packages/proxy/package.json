@@ -1,8 +1,8 @@
 {
-  "name": "@tsuredure-sns/frontend",
+  "name": "@tsuredure-sns/proxy",
   "type": "module",
   "version": "0.0.1",
-  "description": "Frontend for Tsuredure SNS - Frontend",
+  "description": "Frontend for Tsuredure SNS - Proxy",
   "license": "MIT",
   "keywords": [
     "SNS",
@@ -18,20 +18,17 @@
     "url": "https://github.com/il-m-yamagishi/tsuredure-sns"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview",
-    "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 public/logo.webp"
+    "dev": "npx tsx src/index.ts"
   },
   "dependencies": {
     "ws": "^8.18.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/ws": "^8.5.12",
-    "@vite-pwa/assets-generator": "^0.2.4",
-    "vite": "^5.4.1",
-    "vite-plugin-pwa": "^0.20.1",
-    "workbox-window": "^7.1.0"
+    "@types/node": "^20.0.0",
+    "@types/ws": "^8.5.12"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.8"
   }
 }

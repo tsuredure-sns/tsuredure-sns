@@ -1,0 +1,16 @@
+{
+  "name": "@tsuredure-sns/relay",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "Tsuredure SNS - Relay server",
+  "license": "MIT",
+  "homepage": "https://cafe-capy.net/tsuredure-sns/",
+  "dependencies": {
+    "@tsuredure-sns/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@tsuredure-sns/types": "workspace:*",
+    "@tsuredure-sns/typescript-config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

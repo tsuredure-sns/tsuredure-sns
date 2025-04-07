@@ -4,27 +4,25 @@
   "version": "0.0.1",
   "description": "Frontend for Tsuredure SNS - Proxy",
   "license": "MIT",
-  "keywords": [
-    "SNS",
-    "WebRTC",
-    "Sqlite"
-  ],
+  "keywords": ["SNS", "WebRTC", "Sqlite"],
   "homepage": "https://cafe-capy.net/tsuredure-sns/",
   "bugs": {
-    "url": "https://github.com/il-m-yamagishi/tsuredure-sns/issues"
+    "url": "https://github.com/tsuredure-sns/tsuredure-sns/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/il-m-yamagishi/tsuredure-sns"
+    "url": "https://github.com/tsuredure-sns/tsuredure-sns"
   },
   "scripts": {
-    "dev": "npx tsx src/index.ts"
+    "dev": "npx tsx --watch src/index.ts"
   },
   "dependencies": {
     "ws": "^8.18.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@tsuredure-sns/types": "workspace:*",
+    "@tsuredure-sns/typescript-config": "workspace:*",
     "@types/node": "^20.0.0",
     "@types/ws": "^8.5.12"
   },

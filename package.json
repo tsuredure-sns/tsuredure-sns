@@ -1,9 +1,21 @@
 {
   "name": "tsuredure-sns-monorepo",
   "private": true,
-  "packageManager": "pnpm@9.7.1",
+  "packageManager": "pnpm@10.7.1",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "check-types": "turbo run check-types",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write"
+  },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
-    "typescript": "5.5.4"
+    "@biomejs/biome": "catalog:",
+    "turbo": "catalog:",
+    "typescript": "catalog:"
   }
 }

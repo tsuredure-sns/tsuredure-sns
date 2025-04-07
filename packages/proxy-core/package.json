@@ -1,0 +1,20 @@
+{
+  "name": "@tsuredure-sns/proxy-core",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "Tsuredure SNS - Proxy (Core)",
+  "license": "MIT",
+  "keywords": ["SNS", "WebRTC", "Sqlite"],
+  "homepage": "https://cafe-capy.net/tsuredure-sns/",
+  "exports": {
+    "./server": "./src/server.ts"
+  },
+  "dependencies": {
+    "@tsuredure-sns/core": "workspace:*",
+    "hono": "^4.7.1"
+  },
+  "devDependencies": {
+    "@tsuredure-sns/types": "workspace:*",
+    "@tsuredure-sns/typescript-config": "workspace:*"
+  }
+}

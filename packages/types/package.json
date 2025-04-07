@@ -1,0 +1,28 @@
+{
+  "name": "@tsuredure-sns/types",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "check-types": "tsc --noEmit"
+  },
+  "exports": {
+    "./*": {
+      "types": "./src/*.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "devDependencies": {
+    "@tsuredure-sns/typescript-config": "workspace:*",
+    "typescript": "catalog:"
+  },
+  "dependencies": {
+    "json-rpc-2.0": "catalog:"
+  }
+}

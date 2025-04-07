@@ -1,0 +1,12 @@
+{
+  "name": "Tsuredure node.js",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "biomejs.biome",
+        "EditorConfig.EditorConfig"
+      ]
+    }
+  }
+}

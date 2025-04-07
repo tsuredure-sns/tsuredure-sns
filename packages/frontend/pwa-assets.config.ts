@@ -1,4 +1,4 @@
-import { defineConfig } from "@vite-pwa/assets-generator/config";
+import { defineConfig } from '@vite-pwa/assets-generator/config';
 
 export default defineConfig({
   headLinkOptions: {
@@ -7,9 +7,7 @@ export default defineConfig({
   preset: {
     transparent: {
       sizes: [64, 192, 512],
-      favicons: [
-        [48, 'favicon.ico'],
-      ],
+      favicons: [[48, 'favicon.ico']],
       padding: 0,
     },
     maskable: {
@@ -21,7 +19,5 @@ export default defineConfig({
       padding: 0,
     },
   },
-  images: [
-    "public/logo.webp",
-  ],
+  images: ['public/logo.webp'],
 });

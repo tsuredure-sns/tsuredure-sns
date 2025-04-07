@@ -1,0 +1,7 @@
+{
+  "extends": "@tsuredure-sns/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx/dom"
+  }
+}

@@ -11,27 +11,36 @@
   ],
   "homepage": "https://cafe-capy.net/tsuredure-sns/",
   "bugs": {
-    "url": "https://github.com/il-m-yamagishi/tsuredure-sns/issues"
+    "url": "https://github.com/tsuredure-sns/tsuredure-sns/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/il-m-yamagishi/tsuredure-sns"
+    "url": "https://github.com/tsuredure-sns/tsuredure-sns"
   },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 public/logo.webp"
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 public/logo.webp",
+    "test": "vitest"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.0.8",
+    "@tsuredure-sns/core": "workspace:*",
+    "json-rpc-2.0": "catalog:",
+    "tailwindcss": "^4.0.8",
     "ws": "^8.18.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@tsuredure-sns/types": "workspace:*",
+    "@tsuredure-sns/typescript-config": "workspace:*",
     "@types/ws": "^8.5.12",
-    "@vite-pwa/assets-generator": "^0.2.4",
-    "vite": "^5.4.1",
-    "vite-plugin-pwa": "^0.20.1",
-    "workbox-window": "^7.1.0"
+    "@vite-pwa/assets-generator": "^1.0.0",
+    "vite": "^6.2.5",
+    "vite-plugin-pwa": "^1.0.0",
+    "vitest": "^3.0.6",
+    "workbox-build": "^7.3.0",
+    "workbox-window": "^7.3.0"
   }
 }

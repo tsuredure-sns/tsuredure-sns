@@ -11,10 +11,23 @@
   ],
   "homepage": "https://cafe-capy.net/tsuredure-sns/",
   "bugs": {
-    "url": "https://github.com/il-m-yamagishi/tsuredure-sns/issues"
+    "url": "https://github.com/tsuredure-sns/tsuredure-sns/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/il-m-yamagishi/tsuredure-sns"
+    "url": "https://github.com/tsuredure-sns/tsuredure-sns"
+  },
+  "exports": {
+    "./establishRTCConnection": "./src/establishRTCConnection.ts",
+    "./logger": "./src/logger.ts",
+    "./mySecretIdentity": "./src/mySecretIdentity.ts",
+    "./RTCPeerConnectionFactory": "./src/RTCPeerConnectionFactory.ts"
+  },
+  "dependencies": {
+    "@tsuredure-sns/types": "workspace:*",
+    "eventemitter3": "^5.0.1"
+  },
+  "devDependencies": {
+    "@tsuredure-sns/typescript-config": "workspace:*"
   }
 }

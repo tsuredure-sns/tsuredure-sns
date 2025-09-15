@@ -100,6 +100,7 @@ chown -R ${USER_UID}:${USER_GID} /workspace "/home/${USERNAME}"
 npm install -g npm@latest
 corepack enable
 pnpm --version
+npx update-browserslist-db@latest
 EOL
 
 RUN <<EOL

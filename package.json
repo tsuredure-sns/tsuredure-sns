@@ -8,8 +8,8 @@
     "pnpm": ">=10.0.0"
   },
   "scripts": {
-    "build": "pnpm run build",
-    "dev": "pnpm run dev",
+    "build": "pnpm -r run build",
+    "dev": "pnpm -r run dev",
     "lint": "biome check .",
     "lint:fix": "biome check . --write"
   },

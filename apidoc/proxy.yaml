@@ -1,5 +1,0 @@
-asyncapi: 3.0.0
-info:
-  title: Tsuredure Proxy API
-  version: 0.0.1
-id: urn:tsuredure.social:proxy

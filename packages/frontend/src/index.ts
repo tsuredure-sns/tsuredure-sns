@@ -72,19 +72,29 @@ class WebSocketSignalingChannel implements SignalingChannel {
 function establishWebSocket(url: string): Promise<WebSocket> {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(url);
-    ws.on('open', () => {
+    const timer = setTimeout(() => {
+      ws.terminate();
+      ws.off('error', onError);
+      ws.off('open', onOpen);
+      reject(new Error('WebSocket connection timeout'));
+    }, 10_000);
+    function onOpen() {
+      ws.off('error', onError);
+      ws.off('open', onOpen);
+      clearTimeout(timer);
       resolve(ws);
-    });
-    ws.on('error', (err) => {
+    }
+    function onError(err: unknown) {
       if (ws.readyState !== WebSocket.CLOSED) {
         ws.terminate();
       }
+      ws.off('error', onError);
+      ws.off('open', onOpen);
+      clearTimeout(timer);
       reject(err);
-    });
-    setTimeout(() => {
-      ws.terminate();
-      reject(new Error('WebSocket connection timeout'));
-    }, 10_000);
+    }
+    ws.on('open', onOpen);
+    ws.on('error', onError);
   });
 }
 

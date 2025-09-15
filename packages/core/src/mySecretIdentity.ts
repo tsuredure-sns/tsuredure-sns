@@ -1,13 +1,7 @@
 /**
  * Algorithm configuration for generating the key pair.
- * Currently using ECDSA with P-384 curve.
- * TODO: Use Ed25519(waiting browser support)
- * @link https://caniuse.com/?search=Ed25519
  */
-const GENERATE_KEY_ALGORITHM: RsaHashedKeyAlgorithm | EcKeyAlgorithm = {
-  name: 'ECDSA',
-  namedCurve: 'P-384',
-};
+const GENERATE_KEY_ALGORITHM = 'Ed25519';
 
 /**
  * Format for exporting keys.

@@ -22,6 +22,7 @@ const https = (() => {
 })();
 
 export default defineConfig({
+  base: './',
   server: {
     https,
     headers: {

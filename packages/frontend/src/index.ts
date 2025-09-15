@@ -1,7 +1,8 @@
 import { registerSW } from 'virtual:pwa-register';
-import { WebSocket } from 'ws';
 import { establishRTCConnection } from '@tsuredure-sns/core/establishRTCConnection';
 import { ConsoleLogger } from '@tsuredure-sns/core/logger';
+import { MySecretIdentityStorageImpl } from '@tsuredure-sns/core/mySecretIdentity';
+import { RTCPeerConnectionFactoryImpl } from '@tsuredure-sns/core/RTCPeerConnectionFactory';
 import type {
   CandidateEvent,
   DescriptionEvent,
@@ -9,29 +10,28 @@ import type {
   ProxyClientToServerMethods,
   ProxyServerToClientMethods,
   SignalingChannel,
-} from '@tsuredure-sns/types';
-import {
-  generateNewSecret,
-  MySecretIdentityStorageImpl,
-} from '@tsuredure-sns/core/mySecretIdentity';
+} from '@tsuredure-sns/core/types';
 import {
   JSONRPCClient,
   JSONRPCServer,
   JSONRPCServerAndClient,
-  TypedJSONRPCClient,
-  TypedJSONRPCServer,
-  TypedJSONRPCServerAndClient,
+  type TypedJSONRPCClient,
+  type TypedJSONRPCServer,
+  type TypedJSONRPCServerAndClient,
 } from 'json-rpc-2.0';
+import { WebSocket } from 'ws';
 
 registerSW();
 
 const WSS_URL = 'wss://tsuredure.test:8080';
 
 class WebSocketSignalingChannel implements SignalingChannel {
-  constructor(
-    private readonly ws: WebSocket,
-    private readonly urn: Identifier,
-  ) {}
+  private readonly ws: WebSocket;
+  private readonly urn: Identifier;
+  constructor(ws: WebSocket, urn: Identifier) {
+    this.ws = ws;
+    this.urn = urn;
+  }
 
   sendDescription(description: RTCSessionDescription): void {
     this.ws.send(
@@ -67,7 +67,7 @@ class WebSocketSignalingChannel implements SignalingChannel {
   }
 }
 
-async function establishWebSocket(url: string): Promise<WebSocket> {
+function establishWebSocket(url: string): Promise<WebSocket> {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(url);
     ws.on('open', () => {
@@ -88,25 +88,27 @@ async function establishWebSocket(url: string): Promise<WebSocket> {
 
 async function main() {
   const storage = new MySecretIdentityStorageImpl(
-    window.crypto.randomUUID,
-    window.localStorage,
-    window.crypto.subtle,
+    globalThis.crypto.randomUUID,
+    globalThis.localStorage,
+    globalThis.crypto.subtle,
   );
-  const identity = await storage.restoreOrGenerate();
+  const _identity = await storage.restoreOrGenerate();
   const ws = await establishWebSocket(WSS_URL);
-  const server: TypedJSONRPCServer<ProxyServerToClientMethods> = new JSONRPCServer();
-  const client: TypedJSONRPCClient<ProxyClientToServerMethods> = new JSONRPCClient((request) => {
-    try {
-      ws.send(JSON.stringify(request), (err) => {
-        if (err) {
-          return Promise.reject(err);
-        }
-        return Promise.resolve();
-      });
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  });
+  const server: TypedJSONRPCServer<ProxyServerToClientMethods> =
+    new JSONRPCServer();
+  const client: TypedJSONRPCClient<ProxyClientToServerMethods> =
+    new JSONRPCClient((request) => {
+      try {
+        ws.send(JSON.stringify(request), (err) => {
+          if (err) {
+            return Promise.reject(err);
+          }
+          return Promise.resolve();
+        });
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    });
   const rpc: TypedJSONRPCServerAndClient<
     ProxyServerToClientMethods,
     ProxyClientToServerMethods
@@ -119,6 +121,7 @@ async function main() {
   for (const peer of activePeers) {
     const signaler = new WebSocketSignalingChannel(ws, peer.getIdentifier());
     establishRTCConnection(
+      new RTCPeerConnectionFactoryImpl(),
       config,
       new ConsoleLogger(`remote:${peer.getIdentifier()}`),
       true,
@@ -128,7 +131,11 @@ async function main() {
         console.log('Established connection:', peer.getIdentifier());
       })
       .catch((err) => {
-        console.error('Failed to establish connection:', peer.getIdentifier(), err);
+        console.error(
+          'Failed to establish connection:',
+          peer.getIdentifier(),
+          err,
+        );
       });
   }
   ws.on('error', console.error);
@@ -140,62 +147,4 @@ async function main() {
   });
 }
 
-// function testRTCConnectionOnLocal() {
-//   const localLogger = new ConsoleLogger('local');
-//   const remoteLogger = new ConsoleLogger('remote');
-//   const localIsPolite = true;
-//   const remoteIsPolite = false;
-//   const localSignal = new LocalSignalHandler();
-//   const remoteSignal = new LocalSignalHandler();
-//   localSignal.setTarget(remoteSignal);
-//   remoteSignal.setTarget(localSignal);
-
-//   const iceServers = [
-//     {
-//       urls: 'stun:stun1.l.google.com:19302',
-//     },
-//     {
-//       urls: 'stun:stun2.l.google.com:19302',
-//     },
-//     {
-//       urls: 'stun:stun3.l.google.com:19302',
-//     },
-//     {
-//       urls: 'stun:stun4.l.google.com:19302',
-//     },
-//     {
-//       urls: 'stun:stun.l.google.com:19302',
-//     },
-//   ];
-//   const localConnection = establishRTCConnection(
-//     iceServers,
-//     localLogger,
-//     localIsPolite,
-//     remoteSignal,
-//   );
-//   const remoteConnection = establishRTCConnection(
-//     iceServers,
-//     remoteLogger,
-//     remoteIsPolite,
-//     localSignal,
-//   );
-
-//   window.addEventListener(
-//     'beforeunload',
-//     () => {
-//       if (localConnection.dataChannel.readyState === 'open') {
-//         localConnection.dataChannel.close();
-//       }
-//       if (localConnection.pc.connectionState !== 'closed') {
-//         localConnection.pc.close();
-//       }
-//       if (remoteConnection.dataChannel.readyState === 'open') {
-//         remoteConnection.dataChannel.close();
-//       }
-//       if (remoteConnection.pc.connectionState !== 'closed') {
-//         remoteConnection.pc.close();
-//       }
-//     },
-//     { once: true },
-//   );
-// }
+main().catch(console.error);

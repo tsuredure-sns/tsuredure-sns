@@ -1,0 +1,21 @@
+*               text=auto
+.gitignore      text
+*.md            text diff=markdown linguist-detectable
+.env            text export-ignore
+.env.*          text export-ignore
+
+devcontainer.json linguist-language=JSON-with-Comments
+.vscode/*.json linguist-language=JSON-with-Comments
+
+# preserve line endings
+LICENSE         -text
+*.patch         -text
+
+.editorconfig   export-ignore
+.gitattributes  export-ignore
+.gitignore      export-ignore
+.gitkeep        export-ignore
+
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
+*.{ps1,[pP][sS]1} text eol=crlf

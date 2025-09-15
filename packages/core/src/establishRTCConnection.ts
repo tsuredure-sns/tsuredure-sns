@@ -2,7 +2,7 @@ import type {
   Logger,
   RTCPeerConnectionFactory,
   SignalingChannel,
-} from '@tsuredure-sns/types';
+} from './types.ts';
 
 /**
  * Establishing a connection: The WebRTC perfect negotiation pattern
@@ -14,7 +14,7 @@ import type {
  * @param signaler - Signaling handler
  * @returns Promise<RTCPeerConnection>
  */
-export async function establishRTCConnection(
+export function establishRTCConnection(
   factory: RTCPeerConnectionFactory,
   configuration: RTCConfiguration,
   logger: Logger,
@@ -53,7 +53,7 @@ export async function establishRTCConnection(
     pc.addEventListener('icegatheringstatechange', () => {
       logger.debug('ICE gathering state changed', pc.iceGatheringState);
     });
-    pc.addEventListener('icecandidate', async ({ candidate }) => {
+    pc.addEventListener('icecandidate', ({ candidate }) => {
       if (candidate === null) {
         return;
       }

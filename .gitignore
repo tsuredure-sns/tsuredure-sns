@@ -133,3 +133,5 @@ dist
 .turbo
 
 *.pem
+
+.pnpm-store/

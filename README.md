@@ -16,7 +16,7 @@
 > powershell -NoProfile -ExecutionPolicy unrestricted -Command "start notepad C:\Windows\System32\drivers\etc\hosts -verb runas"
 # Installs mkcert from winget
 > winget install mkcert
-> mkcert
+> mkcert -install
 ```
 
 Add `127.0.0.1 tsuredure.test` to hosts file
@@ -24,7 +24,7 @@ Add `127.0.0.1 tsuredure.test` to hosts file
 #### macOS, Linux
 
 ```sh
-$ sudo vi /etc/hosts
+sudo vi /etc/hosts
 ```
 
 Add `127.0.0.1 tsuredure.test` to hosts file
@@ -32,10 +32,9 @@ Add `127.0.0.1 tsuredure.test` to hosts file
 ### Installation
 
 ```sh
-$ pnpm install
-$ mkcert.exe --cert-file=cert.pem --key-file=key.pem "localhost" "tsuredure.test"
+pnpm install
+mkcert.exe --cert-file=cert.pem --key-file=key.pem "localhost" "tsuredure.test"
 ```
-
 
 ## Technologies
 

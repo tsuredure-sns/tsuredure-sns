@@ -1,12 +1,58 @@
 {
   "name": "Tsuredure node.js",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+  "dockerComposeFile": "./compose.yaml",
+  "service": "workspace",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "remoteUser": "node",
+  "containerUser": "node",
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder:/workspace}"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "configureZshAsDefaultShell": true,
+      "installOhMyZsh": true,
+      "installOhMyZshConfig": true,
+      "installZsh": true,
+      "nonFreePackages": false,
+      "upgradePackages": false,
+      "userUid": "${localEnv:USER_UID}",
+      "userGid": "${localEnv:USER_GID}",
+      "username": "node"
+    }
+  },
   "customizations": {
     "vscode": {
       "extensions": [
+        "-dbaeumer.vscode-eslint",
+        "-rvest.vs-code-prettier-eslint",
         "biomejs.biome",
-        "EditorConfig.EditorConfig"
-      ]
+        "EditorConfig.EditorConfig",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "GitHub.vscode-pull-request-github",
+        "DavidAnson.vscode-markdownlint"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "[typescript]": {
+          "editor.defaultFormatter": "biomejs.biome"
+        },
+        "[typescriptreact]": {
+          "editor.defaultFormatter": "biomejs.biome"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "biomejs.biome"
+        },
+        "[jsonc]": {
+          "editor.quickSuggestions": {
+            "strings": true
+          },
+          "editor.suggest.insertMode": "replace",
+          "editor.defaultFormatter": "biomejs.biome"
+        }
+      }
     }
   }
 }

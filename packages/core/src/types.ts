@@ -17,14 +17,10 @@ export interface HasIdentity {
 export interface DID extends HasIdentity {}
 
 export interface Logger {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  info(...args: any[]): void;
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  warning(...args: any[]): void;
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  error(...args: any[]): void;
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  debug(...args: any[]): void;
+  info(...args: unknown[]): void;
+  warning(...args: unknown[]): void;
+  error(...args: unknown[]): void;
+  debug(...args: unknown[]): void;
 }
 
 export interface SignalingChannel {
@@ -69,10 +65,7 @@ export type ProxyServerToClientMethods = {
    * @param description
    * @param user
    */
-  onDescription(args: {
-    description: RTCSessionDescription;
-    user: DID;
-  }): void;
+  onDescription(args: { description: RTCSessionDescription; user: DID }): void;
   /**
    * Receive a ICE candidate from the server
    * @param candidate

@@ -1,21 +1,17 @@
-import type { Logger } from '@tsuredure-sns/types';
+import type { Logger } from './types.ts';
 
 export class ConsoleLogger implements Logger {
   constructor(private readonly id: string) {}
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  public info(...args: any[]): void {
+  public info(...args: unknown[]): void {
     console.info(`[${this.id}]`, ...args);
   }
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  public warning(...args: any[]): void {
+  public warning(...args: unknown[]): void {
     console.warn(`[${this.id}]`, ...args);
   }
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  public error(...args: any[]): void {
+  public error(...args: unknown[]): void {
     console.error(`[${this.id}]`, ...args);
   }
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  public debug(...args: any[]): void {
+  public debug(...args: unknown[]): void {
     console.debug(`[${this.id}]`, ...args);
   }
 }

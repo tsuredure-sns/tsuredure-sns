@@ -1,8 +1,12 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
-import tailwindcss from '@tailwindcss/vite';
-import { resolve } from 'node:path';
-import { readFileSync } from 'node:fs';
+
+if (!import.meta.dirname) {
+  throw new Error('import.meta.dirname is not defined');
+}
 
 export default defineConfig({
   server: {
@@ -10,6 +14,26 @@ export default defineConfig({
       key: readFileSync(resolve(import.meta.dirname, '../../', 'key.pem')),
       cert: readFileSync(resolve(import.meta.dirname, '../../', 'cert.pem')),
     },
+    headers: {
+      'accept-charset': 'utf-8',
+      'accept-encoding': 'br, gzip, zstd, deflate',
+      'strict-transport-security':
+        'max-age=63072000; includeSubDomains; preload',
+      'permissions-policy': 'fullscreen=(self)',
+      'referrer-policy': 'same-origin',
+      'x-frame-options': 'SAMEORIGIN',
+      'x-content-type-options': 'nosniff',
+      'x-xss-protection': '1; mode=block',
+      'cross-origin-embedder-policy': 'require-corp',
+      'cross-origin-opener-policy': 'same-origin',
+      'cross-origin-resource-policy': 'same-origin',
+    },
+  },
+  optimizeDeps: {
+    exclude: ['@electric-sql/pglite'],
+  },
+  worker: {
+    format: 'es',
   },
   plugins: [
     tailwindcss(),
@@ -33,12 +57,20 @@ export default defineConfig({
                 {
                   handlerWillRespond: async ({ response }) => {
                     const headers = new Headers(response.headers);
-                    headers.set('X-Frame-Options', 'DENY');
-                    headers.set('X-Content-Type-Options', 'nosniff');
-                    headers.set('X-XSS-Protection', '1; mode=block');
-                    headers.set('Cross-Origin-Embedder-Policy', 'require-corp');
-                    headers.set('Cross-Origin-Opener-Policy', 'same-origin');
-                    console.log(headers);
+                    headers.set('accept-charset', 'utf-8');
+                    headers.set('accept-encoding', 'br, gzip, zstd, deflate');
+                    headers.set(
+                      'strict-transport-security',
+                      'max-age=63072000; includeSubDomains; preload',
+                    );
+                    headers.set('permissions-policy', 'fullscreen=(self)');
+                    headers.set('referrer-policy', 'same-origin');
+                    headers.set('x-frame-options', 'SAMEORIGIN');
+                    headers.set('x-content-type-options', 'nosniff');
+                    headers.set('x-xss-protection', '1; mode=block');
+                    headers.set('cross-origin-embedder-policy', 'require-corp');
+                    headers.set('cross-origin-opener-policy', 'same-origin');
+                    headers.set('cross-origin-resource-policy', 'same-origin');
 
                     return new Response(response.body, {
                       headers,

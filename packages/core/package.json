@@ -21,13 +21,11 @@
     "./establishRTCConnection": "./src/establishRTCConnection.ts",
     "./logger": "./src/logger.ts",
     "./mySecretIdentity": "./src/mySecretIdentity.ts",
-    "./RTCPeerConnectionFactory": "./src/RTCPeerConnectionFactory.ts"
+    "./RTCPeerConnectionFactory": "./src/RTCPeerConnectionFactory.ts",
+    "./types": "./src/types.ts"
   },
   "dependencies": {
-    "@tsuredure-sns/types": "workspace:*",
     "eventemitter3": "^5.0.1"
   },
-  "devDependencies": {
-    "@tsuredure-sns/typescript-config": "workspace:*"
-  }
+  "devDependencies": {}
 }

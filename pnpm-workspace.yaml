@@ -2,7 +2,11 @@ packages:
   - packages/*
 
 catalog:
-  '@biomejs/biome': 1.9.4
-  turbo: 2.5.0
-  typescript: 5.8.3
-  'json-rpc-2.0': 1.7.0
+  '@biomejs/biome': 2.2.4
+  json-rpc-2.0: 1.7.1
+  typescript: 5.9.2
+
+onlyBuiltDependencies:
+  - bufferutil
+  - esbuild
+  - sharp

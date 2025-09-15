@@ -1,5 +1,5 @@
-import { createServer } from 'node:https';
 import { readFileSync } from 'node:fs';
+import { createServer } from 'node:https';
 import { WebSocket, WebSocketServer } from 'ws';
 
 const server = createServer({

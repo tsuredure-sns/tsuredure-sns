@@ -1,0 +1,31 @@
+services:
+  workspace:
+    image: dev/workspace:latest
+    pull_policy: build
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        USERNAME: ${USERNAME:-node}
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+        TZ: ${TZ:-UTC}
+        LANGUAGE: ${LANGUAGE:-en}
+        COUNTRY: ${COUNTRY:-US}
+        ENCODING: ${ENCODING:-UTF-8}
+        LOCALE: ${LOCALE:-"en_US.UTF-8 UTF-8"}
+        EDITOR: ${EDITOR:-vim}
+    command:
+      - sleep
+      - infinity
+    volumes:
+      - type: bind
+        source: ${LOCAL_WORKSPACE_FOLDER:-..}
+        target: /workspace
+      - type: volume
+        source: workspace-bashhistory
+        target: /commandhistory
+
+volumes:
+  workspace-bashhistory:
+    driver: local

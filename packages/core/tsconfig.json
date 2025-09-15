@@ -1,5 +1,5 @@
 {
-  "extends": "@tsuredure-sns/typescript-config/tsconfig.json",
+  "extends": "../../tsconfig.json",
   "include": ["src"],
   "exclude": ["node_modules"]
 }

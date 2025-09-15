@@ -1,7 +1,17 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "organizeImports": {
-    "enabled": true
+  "$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
+  "vcs": {
+    "clientKind": "git",
+    "defaultBranch": "main",
+    "enabled": true,
+    "root": "./",
+    "useIgnoreFile": true
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "recommended": true
+    }
   },
   "formatter": {
     "enabled": true,
@@ -18,5 +28,16 @@
       "quoteStyle": "single",
       "trailingCommas": "all"
     }
+  },
+  "files": {
+    "experimentalScannerIgnores": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/.biome/**",
+      "**/.git/**",
+      "**/.hg/**",
+      "**/.svn/**"
+    ],
+    "ignoreUnknown": true
   }
 }

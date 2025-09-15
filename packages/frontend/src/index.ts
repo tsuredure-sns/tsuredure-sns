@@ -1,8 +1,4 @@
 import { registerSW } from 'virtual:pwa-register';
-import { establishRTCConnection } from '@tsuredure-sns/core/establishRTCConnection';
-import { ConsoleLogger } from '@tsuredure-sns/core/logger';
-import { MySecretIdentityStorageImpl } from '@tsuredure-sns/core/mySecretIdentity';
-import { RTCPeerConnectionFactoryImpl } from '@tsuredure-sns/core/RTCPeerConnectionFactory';
 import type {
   CandidateEvent,
   DescriptionEvent,
@@ -10,7 +6,13 @@ import type {
   ProxyClientToServerMethods,
   ProxyServerToClientMethods,
   SignalingChannel,
-} from '@tsuredure-sns/core/types';
+} from '@tsuredure-sns/core';
+import {
+  ConsoleLogger,
+  establishRTCConnection,
+  MySecretIdentityStorageImpl,
+  RTCPeerConnectionFactoryImpl,
+} from '@tsuredure-sns/core';
 import {
   JSONRPCClient,
   JSONRPCServer,

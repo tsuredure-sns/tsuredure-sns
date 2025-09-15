@@ -17,15 +17,40 @@
     "type": "git",
     "url": "https://github.com/tsuredure-sns/tsuredure-sns"
   },
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "unpkg": "dist/index.iife.js",
+  "files": [
+    "dist"
+  ],
   "exports": {
-    "./establishRTCConnection": "./src/establishRTCConnection.ts",
-    "./logger": "./src/logger.ts",
-    "./mySecretIdentity": "./src/mySecretIdentity.ts",
-    "./RTCPeerConnectionFactory": "./src/RTCPeerConnectionFactory.ts",
-    "./types": "./src/types.ts"
+    ".": {
+      "development": "./src/index.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "umd": "./dist/index.umd.js",
+      "iife": "./dist/index.iife.js"
+    },
+    "./*": "./*",
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "eventemitter3": "^5.0.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "tsdown": "^0.15.1"
+  },
+  "scripts": {
+    "build": "tsdown"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs"
+      },
+      "./*": "./*"
+    }
+  }
 }

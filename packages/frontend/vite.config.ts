@@ -1,21 +1,25 @@
-import { readFileSync, statSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
+import type { ServerOptions } from 'node:http2';
 import { resolve } from 'node:path';
+import type { SecureContextOptions } from 'node:tls';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
-import type { ServerOptions } from 'node:http2';
-import type { SecureContextOptions } from 'node:tls';
 
 if (!import.meta.dirname) {
   throw new Error('import.meta.dirname is not defined');
 }
-const stat = statSync(resolve(import.meta.dirname, '../../', 'key.pem'));
-const https = stat.isFile()
-  ? ({
+
+const https = (() => {
+  try {
+    return {
       key: readFileSync(resolve(import.meta.dirname, '../../', 'key.pem')),
       cert: readFileSync(resolve(import.meta.dirname, '../../', 'cert.pem')),
-    } satisfies ServerOptions & SecureContextOptions)
-  : {};
+    } satisfies ServerOptions & SecureContextOptions;
+  } catch {
+    return {};
+  }
+})();
 
 export default defineConfig({
   server: {

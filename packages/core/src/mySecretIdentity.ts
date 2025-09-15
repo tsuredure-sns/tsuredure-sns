@@ -22,15 +22,13 @@ const STORAGE_KEY = 'fvadsjnjklavsdfmjl';
 /**
  * Generates a new secret identity.
  *
- * @param generateId - Function to generate a unique identifier.
  * @param subtle - SubtleCrypto instance for cryptographic operations.
  * @returns A promise that resolves to a new instance of MySecretIdentity.
  */
 export async function generateNewSecret(
-  generateId: () => string,
   subtle: SubtleCrypto,
 ): Promise<MySecretIdentity> {
-  const id = generateId();
+  const id = globalThis.crypto.randomUUID();
   const extractable = true;
   const keyPair = await subtle.generateKey(
     GENERATE_KEY_ALGORITHM,
@@ -116,7 +114,6 @@ export class MySecretIdentityStorageImpl implements MySecretIdentityStorage {
    * @param subtle - SubtleCrypto instance for cryptographic operations.
    */
   constructor(
-    private readonly generateId: () => string,
     private readonly storage: Storage,
     private readonly subtle: SubtleCrypto,
   ) {}
@@ -125,7 +122,7 @@ export class MySecretIdentityStorageImpl implements MySecretIdentityStorage {
     const data = this.storage.getItem(STORAGE_KEY);
     if (!data) {
       // generate New Identity
-      const newIdentity = await generateNewSecret(this.generateId, this.subtle);
+      const newIdentity = await generateNewSecret(this.subtle);
       await this.store(newIdentity);
       return newIdentity;
     }

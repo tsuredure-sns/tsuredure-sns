@@ -88,7 +88,6 @@ function establishWebSocket(url: string): Promise<WebSocket> {
 
 async function main() {
   const storage = new MySecretIdentityStorageImpl(
-    globalThis.crypto.randomUUID,
     globalThis.localStorage,
     globalThis.crypto.subtle,
   );

@@ -36,7 +36,8 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "eventemitter3": "^5.0.1"
+    "eventemitter3": "^5.0.1",
+    "json-rpc-2.0": "catalog:"
   },
   "devDependencies": {
     "tsdown": "^0.15.1"

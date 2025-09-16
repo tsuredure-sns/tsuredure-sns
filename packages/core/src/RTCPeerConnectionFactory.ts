@@ -1,4 +1,4 @@
-import type { RTCPeerConnectionFactory } from './types.ts';
+import type { RTCPeerConnectionFactory } from './types.js';
 
 export class RTCPeerConnectionFactoryImpl implements RTCPeerConnectionFactory {
   public create(configuration: RTCConfiguration): RTCPeerConnection {

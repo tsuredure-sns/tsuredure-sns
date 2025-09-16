@@ -43,6 +43,7 @@ apt-get install -y --no-install-recommends \
     fonts-noto-cjk \
     fonts-powerline \
     fzf \
+    git \
     gnupg \
     htop \
     iproute2 \
@@ -100,7 +101,6 @@ chown -R ${USER_UID}:${USER_GID} /workspace "/home/${USERNAME}"
 npm install -g npm@latest
 corepack enable
 pnpm --version
-npx update-browserslist-db@latest
 EOL
 
 RUN <<EOL

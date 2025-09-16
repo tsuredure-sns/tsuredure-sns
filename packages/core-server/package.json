@@ -1,8 +1,8 @@
 {
-  "name": "@tsuredure-sns/proxy",
+  "name": "@tsuredure-sns/core-server",
   "type": "module",
   "version": "0.0.1",
-  "description": "Frontend for Tsuredure SNS - Proxy",
+  "description": "Frontend for Tsuredure SNS - Server core",
   "license": "MIT",
   "keywords": [
     "SNS",
@@ -20,16 +20,17 @@
   "scripts": {
     "dev": "npx tsx --watch src/index.ts"
   },
+  "exports": {
+    ".": {
+      "import": "./src/index.ts"
+    }
+  },
   "dependencies": {
     "@tsuredure-sns/core": "workspace:*",
-    "ws": "^8.18.0",
+    "hono": "^4.9.7",
     "zod": "^4.1.8"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@types/ws": "^8.5.12"
-  },
-  "optionalDependencies": {
-    "bufferutil": "^4.0.8"
+    "@types/node": "^20.0.0"
   }
 }

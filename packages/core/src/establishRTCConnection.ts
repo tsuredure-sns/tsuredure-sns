@@ -2,7 +2,7 @@ import type {
   Logger,
   RTCPeerConnectionFactory,
   SignalingChannel,
-} from './types.ts';
+} from './types.js';
 
 /**
  * Establishing a connection: The WebRTC perfect negotiation pattern

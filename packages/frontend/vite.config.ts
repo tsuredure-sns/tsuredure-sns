@@ -22,12 +22,10 @@ const https = (() => {
 })();
 
 export default defineConfig({
-  base: './',
+  // base: './',
   server: {
     https,
     headers: {
-      'accept-charset': 'utf-8',
-      'accept-encoding': 'br, gzip, zstd, deflate',
       'strict-transport-security':
         'max-age=63072000; includeSubDomains; preload',
       'permissions-policy': 'fullscreen=(self)',
@@ -38,6 +36,11 @@ export default defineConfig({
       'cross-origin-embedder-policy': 'require-corp',
       'cross-origin-opener-policy': 'same-origin',
       'cross-origin-resource-policy': 'same-origin',
+    },
+    strictPort: true,
+    hmr: {
+      protocol: 'wss',
+      port: 5173,
     },
   },
   optimizeDeps: {
@@ -55,9 +58,7 @@ export default defineConfig({
       },
       workbox: {
         cleanupOutdatedCaches: true,
-        globPatterns: [
-          // "**/*.{js,css,html,ico,png,svg}",
-        ],
+        // globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         runtimeCaching: [
           {
             urlPattern: ({ request }) =>
@@ -67,27 +68,32 @@ export default defineConfig({
               plugins: [
                 {
                   handlerWillRespond: async ({ response }) => {
-                    const headers = new Headers(response.headers);
-                    headers.set('accept-charset', 'utf-8');
-                    headers.set('accept-encoding', 'br, gzip, zstd, deflate');
-                    headers.set(
+                    response.headers.set(
                       'strict-transport-security',
                       'max-age=63072000; includeSubDomains; preload',
                     );
-                    headers.set('permissions-policy', 'fullscreen=(self)');
-                    headers.set('referrer-policy', 'same-origin');
-                    headers.set('x-frame-options', 'SAMEORIGIN');
-                    headers.set('x-content-type-options', 'nosniff');
-                    headers.set('x-xss-protection', '1; mode=block');
-                    headers.set('cross-origin-embedder-policy', 'require-corp');
-                    headers.set('cross-origin-opener-policy', 'same-origin');
-                    headers.set('cross-origin-resource-policy', 'same-origin');
+                    response.headers.set(
+                      'permissions-policy',
+                      'fullscreen=(self)',
+                    );
+                    response.headers.set('referrer-policy', 'same-origin');
+                    response.headers.set('x-frame-options', 'SAMEORIGIN');
+                    response.headers.set('x-content-type-options', 'nosniff');
+                    response.headers.set('x-xss-protection', '1; mode=block');
+                    response.headers.set(
+                      'cross-origin-embedder-policy',
+                      'require-corp',
+                    );
+                    response.headers.set(
+                      'cross-origin-opener-policy',
+                      'same-origin',
+                    );
+                    response.headers.set(
+                      'cross-origin-resource-policy',
+                      'same-origin',
+                    );
 
-                    return new Response(response.body, {
-                      headers,
-                      status: response.status,
-                      statusText: response.statusText,
-                    });
+                    return response;
                   },
                 },
               ],
@@ -95,9 +101,7 @@ export default defineConfig({
           },
         ],
       },
-      includeAssets: [
-        // "**/*.png"
-      ],
+      includeAssets: ['**/*.png'],
       manifest: {
         id: '/',
         name: '徒然 SNS',

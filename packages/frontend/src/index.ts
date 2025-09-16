@@ -3,29 +3,13 @@ import type {
   CandidateEvent,
   DescriptionEvent,
   Identifier,
-  ProxyClientToServerMethods,
-  ProxyServerToClientMethods,
   SignalingChannel,
 } from '@tsuredure-sns/core';
-import {
-  ConsoleLogger,
-  establishRTCConnection,
-  MySecretIdentityStorageImpl,
-  RTCPeerConnectionFactoryImpl,
-} from '@tsuredure-sns/core';
-import {
-  JSONRPCClient,
-  JSONRPCServer,
-  JSONRPCServerAndClient,
-  type TypedJSONRPCClient,
-  type TypedJSONRPCServer,
-  type TypedJSONRPCServerAndClient,
-} from 'json-rpc-2.0';
-import { WebSocket } from 'ws';
+import { SignalingRPCClientImpl } from '@tsuredure-sns/core';
 
 registerSW();
 
-const WSS_URL = 'wss://tsuredure.test:8080';
+const WSS_URL = 'wss://localhost:3000/ws';
 
 class WebSocketSignalingChannel implements SignalingChannel {
   private readonly ws: WebSocket;
@@ -60,7 +44,7 @@ class WebSocketSignalingChannel implements SignalingChannel {
       | [type: 'candidate', listener: (event: CandidateEvent) => Promise<void>]
   ): void {
     const [type, listener] = args;
-    this.ws.on('message', (data) => {
+    this.ws.addEventListener('message', (data) => {
       const message = JSON.parse(data.toString());
       if (message.type === type && message.urn === this.urn) {
         listener(message.payload).catch(console.error);
@@ -73,89 +57,49 @@ function establishWebSocket(url: string): Promise<WebSocket> {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(url);
     const timer = setTimeout(() => {
-      ws.terminate();
-      ws.off('error', onError);
-      ws.off('open', onOpen);
+      ws.close(1, 'Connection timeout');
+      ws.removeEventListener('error', onError);
+      ws.removeEventListener('open', onOpen);
       reject(new Error('WebSocket connection timeout'));
     }, 10_000);
     function onOpen() {
-      ws.off('error', onError);
-      ws.off('open', onOpen);
+      ws.removeEventListener('error', onError);
+      ws.removeEventListener('open', onOpen);
       clearTimeout(timer);
       resolve(ws);
     }
     function onError(err: unknown) {
       if (ws.readyState !== WebSocket.CLOSED) {
-        ws.terminate();
+        ws.close(2, 'Client error');
       }
-      ws.off('error', onError);
-      ws.off('open', onOpen);
+      ws.removeEventListener('error', onError);
+      ws.removeEventListener('open', onOpen);
       clearTimeout(timer);
       reject(err);
     }
-    ws.on('open', onOpen);
-    ws.on('error', onError);
+    ws.addEventListener('open', onOpen);
+    ws.addEventListener('error', onError);
   });
 }
 
 async function main() {
-  const storage = new MySecretIdentityStorageImpl(
-    globalThis.localStorage,
-    globalThis.crypto.subtle,
-  );
-  const _identity = await storage.restoreOrGenerate();
+  // const storage = new MySecretIdentityStorageImpl(
+  //   globalThis.localStorage,
+  //   globalThis.crypto.subtle,
+  // );
+  // const _identity = await storage.restoreOrGenerate();
   const ws = await establishWebSocket(WSS_URL);
-  const server: TypedJSONRPCServer<ProxyServerToClientMethods> =
-    new JSONRPCServer();
-  const client: TypedJSONRPCClient<ProxyClientToServerMethods> =
-    new JSONRPCClient((request) => {
-      try {
-        ws.send(JSON.stringify(request), (err) => {
-          if (err) {
-            return Promise.reject(err);
-          }
-          return Promise.resolve();
-        });
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    });
-  const rpc: TypedJSONRPCServerAndClient<
-    ProxyServerToClientMethods,
-    ProxyClientToServerMethods
-  > = new JSONRPCServerAndClient(server, client);
-  ws.on('message', (data) => {
-    rpc.receiveAndSend(JSON.parse(data.toString()));
+  ws.addEventListener('message', (ev) => {
+    console.log('Received message:', ev.data);
+    rpc.onReceive(ev.data.toString());
   });
-  const config = await rpc.request('getRecommendedRPCConfiguration');
-  const activePeers = await rpc.request('listActivePeers');
-  for (const peer of activePeers) {
-    const signaler = new WebSocketSignalingChannel(ws, peer.getIdentifier());
-    establishRTCConnection(
-      new RTCPeerConnectionFactoryImpl(),
-      config,
-      new ConsoleLogger(`remote:${peer.getIdentifier()}`),
-      true,
-      signaler,
-    )
-      .then(() => {
-        console.log('Established connection:', peer.getIdentifier());
-      })
-      .catch((err) => {
-        console.error(
-          'Failed to establish connection:',
-          peer.getIdentifier(),
-          err,
-        );
-      });
-  }
-  ws.on('error', console.error);
-  ws.on('ping', () => {
-    ws.pong();
+  const rpc = new SignalingRPCClientImpl((jsonRPCRequest: unknown) => {
+    console.log('Sending message:', jsonRPCRequest);
+    ws.send(JSON.stringify(jsonRPCRequest));
   });
-  ws.on('close', () => {
-    console.log('Proxy WebSocket connection closed');
-  });
+
+  const rpcConfiguration = await rpc.getRecommendedRPCConfiguration();
+  console.log('RPC Configuration:', rpcConfiguration);
 }
 
 main().catch(console.error);

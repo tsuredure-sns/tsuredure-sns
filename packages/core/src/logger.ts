@@ -1,4 +1,4 @@
-import type { Logger } from './types.ts';
+import type { Logger } from './types.js';
 
 export class ConsoleLogger implements Logger {
   constructor(private readonly id: string) {}
